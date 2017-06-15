@@ -11,15 +11,15 @@ from units import unit_registry as u
 #A few equations for useful geometry
 # Is there a geometry package that we should be using?
 
-def A_Circle(D_Circle:'Diameter of Circle'):
+def area_circle(D_Circle:'Diameter of Circle'):
     return math.pi/4*D_Circle**2
 
-def D_Circle(A_Circle):
+def diam_circle(A_Circle):
     return (4*A_Circle/math.pi)**(1/2)
 
 ######################### Hydraulics ######################### 
 
-def Re_pipe(Q,D,nu):
+def re_pipe(Q,D,nu):
     Re=(4*Q)/(math.pi*D*nu)
     return Re.to(u.dimensionless)
 # The .to part forces Re to be dimensionless
@@ -27,7 +27,7 @@ def Re_pipe(Q,D,nu):
 Re_TRANSITION_PIPE=2100
 
 
-def R_h(w,b,openchannel):
+def radius_hydraulic(w,b,openchannel):
     """ returns the hydraulic radius"""    
     if openchannel==1:
         h=(w*b)/(w + 2*b)
@@ -37,95 +37,95 @@ def R_h(w,b,openchannel):
     return h.to(u.m)
 
 
-def R_hGen(A,WP):
+def radius_hydraulic_general(A,WP):
     """returns the general hydraulic radius"""
     hGen= A/WP 
 #Area/wetted perimeter
     return hGen.to(u.m)
 
 
-def Re_rect(Q,w,b,nu,openchannel):
+def re_rect(Q,w,b,nu,openchannel):
     """returns the Reynolds number for rectangular channel"""
-    rect=4*Q*R_h(w,b,openchannel)/(w*b*nu)
+    rect=4*Q*radius_hydraulic(w,b,openchannel)/(w*b*nu)
 #Reynolds number for rectangular channel; open = 0 if all sides are wetted; l = D and D = 4*R.h       
     return rect.to(u.dimesnionless)
 
 
-def Re_Gen(V,A,WP,nu):
+def re_general(V,A,WP,nu):
     """returns the Reynolds number for general cross section"""
-    gen=4*R_hGen(A,WP)*V/nu
+    gen=4*radius_hydraulic_general(A,WP)*V/nu
     return gen.to(u.dimensionless)
            
-def f(Q,D,nu,e):
+def fric(Q,D,nu,e):
     """Returns the friction factor for pipe flow for both laminar and turbulent flows"""
-    if Re_pipe(Q,D,nu)>=Re_TRANSITION_PIPE:
+    if re_pipe(Q,D,nu)>=Re_TRANSITION_PIPE:
 #Swamee-Jain friction factor for turbulent flow; best for Re>3000 and ε/D < 0.02        
-        f=0.25/(math.log10(e/(3.7*D)+5.74/Re_pipe(Q,D,nu)**0.9))**2
+        f=0.25/(math.log10(e/(3.7*D)+5.74/re_pipe(Q,D,nu)**0.9))**2
     else:
-        f=64/Re_pipe(Q,D,nu)
+        f=64/re_pipe(Q,D,nu)
     return f.to(u.dimensionless)
 
-def f_rect(Q,w,b,nu,e,openchannel):
+def fric_rect(Q,w,b,nu,e,openchannel):
     """returns the friction factor for a rectangular channel"""
-    if Re_rect(Q,w,b,nu,openchannel)>=Re_TRANSITION_PIPE:
+    if re_rect(Q,w,b,nu,openchannel)>=Re_TRANSITION_PIPE:
 #Swamee-Jain friction factor adapted for rectangular channel.
 #D = 4*R*h in this case.         
-          f=0.25/(math.log10(e/(3.7*4*R_h(w,b,openchannel))+5.74/Re_rect(Q,w,b,nu,openchannel)**0.9))**2
+          f=0.25/(math.log10(e/(3.7*4*radius_hydraulic(w,b,openchannel))+5.74/re_rect(Q,w,b,nu,openchannel)**0.9))**2
     else:
-         f=64/Re_rect(Q,w,b,nu,openchannel)
+         f=64/re_rect(Q,w,b,nu,openchannel)
     return f.to(u.dimensionless)   
  
-def f_gen(A,WP,V,nu,e):
+def fric_general(A,WP,V,nu,e):
     """returns the friction factor for a general channel"""
-    if Re_Gen(V,A,WP,nu)>=Re_TRANSITION_PIPE:
+    if re_general(V,A,WP,nu)>=Re_TRANSITION_PIPE:
 #Swamee-Jain friction factor adapted for any cross-section.
 #D = 4*R*h 
-        f=0.25/(math.log10(e/(3.7*4*R_hGen(A,WP))+5.74/Re_Gen(V,A,WP,nu)**0.9))**2
+        f=0.25/(math.log10(e/(3.7*4*radius_hydraulic_general(A,WP))+5.74/re_general(V,A,WP,nu)**0.9))**2
     else:
-        f=64/Re_Gen(V,A,WP,nu)
+        f=64/re_general(V,A,WP,nu)
     return f.to(u.dimensionless)      
                  
-def HLf(Q,D,L,nu,e):
+def headloss_fric(Q,D,L,nu,e):
     """Returns the major head loss (due to wall shear) in a pipe for both laminar and turbulent flows"""
-    HLf=f(Q,D,nu,e)*8/(u.g_0*math.pi**2)*(L*Q**2)/D**5
+    HLf=fric(Q,D,nu,e)*8/(u.g_0*math.pi**2)*(L*Q**2)/D**5
     return HLf.to(u.m)  
 
-def HLe(Q,D,K):
+def headloss_exp(Q,D,K):
     """Returns the minor head loss (due to expansions) in a pipe. This equation applies to both laminar and turbulent flows"""
     HLe=K*8/(u.g_0*math.pi**2)*(Q**2)/(D**4)
     return HLe.to(u.m)
 
-def HL(Q,D,L,nu,e,K):
+def headloss(Q,D,L,nu,e,K):
     """ Returns the total head loss due to major and minor losses in a pipe. This equation applies to both laminar and turbulent flows"""
-    HL=HLf(Q,D,L,nu,e)+HLe(Q,D,K)
+    HL= headloss_fric(Q,D,L,nu,e)+headloss_exp(Q,D,K)
     return HL.to(u.m)
 
-def Hfrect(Q,w,b,L,nu,e,openchannel):
+def headloss_fric_rect(Q,w,b,L,nu,e,openchannel):
     """Returns the major head loss (due to wall shear) in a rectangular channel for both laminar and turbulent flows"""
-    Hfrect=f_rect(Q,w,b,nu,e,openchannel)*L/(4*R_h(w,b,openchannel))*Q**2/(2*u.g_0*(w*b)**2)
+    Hfrect=fric_rect(Q,w,b,nu,e,openchannel)*L/(4*radius_hydraulic(w,b,openchannel))*Q**2/(2*u.g_0*(w*b)**2)
     return Hfrect.to(u.m)
 
-def Herect(Q,w,b,K):
+def headloss_exp_rect(Q,w,b,K):
      """Returns the minor head loss (due to expansions) in a rectangular channel. This equation applies to both laminar and turbulent flows"""
      Herect=K*Q**2/(2*u.g_0*(w*b)**2)
      return Herect.to(u.m)
  
-def Hlrect(Q,w,b,L,K,nu,e,openchannel):
+def headloss_rect(Q,w,b,L,K,nu,e,openchannel):
       """ Returns the total head loss due to major and minor losses in a rectangular channel. This equation applies to both laminar and turbulent flows"""
-      Hlrect=Herect(Q,w,b,K)+Hfrect(Q,w,b,L,nu,e,openchannel)
+      Hlrect=headloss_exp_rect(Q,w,b,K)+ headloss_fric_rect(Q,w,b,L,nu,e,openchannel)
       return Hlrect.to(u.m)
     
-def Hfgen(A,WP,V,L,nu,e):
+def headloss_fric_general(A,WP,V,L,nu,e):
      """Returns the major head loss (due to wall shear) in the general case for both laminar and turbulent flows"""
-     Hfgen=f_gen(A,WP,V,nu,e)*L/(4*R_hGen(A,WP))*V**2/(2*u.g_0)
+     Hfgen=fric_general(A,WP,V,nu,e)*L/(4*radius_hydraulic_general(A,WP))*V**2/(2*u.g_0)
      return Hfgen.to(u.m)
  
-def Hegen(V,K):
+def headloss_exp_general(V,K):
     """Returns the minor head loss (due to expansions) in the general case. This equation applies to both laminar and turbulent flows"""
     Hegen=K*V**2/(2*u.g_0)
     return Hegen.to(u.m)
 
-def Hlgen(V,WP,L,K,nu,e):
+def headloss_gen(V,WP,L,K,nu,e):
      """ Returns the total head loss due to major and minor losses in the general case. This equation applies to both laminar and turbulent flows"""
      Hlgen=h
     
