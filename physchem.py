@@ -2,6 +2,8 @@
 
 ######################### Imports #########################
 import math
+import scipy
+import numpy
 
 from units import unit_registry as u
 
@@ -143,8 +145,14 @@ def flow_orifice(D,h,ratio_VC_orifice):
          Q=0
     return Q.to(u.L/u.s)
 
-def      
-    
+def  flow_orifice_vert(D,h,ratio_VC_orifice):
+    """Returns the vertical flow rate of orifice"""
+    if h>-D/2 : 
+        Q = ratio_VC_orifice*((2*u.g_0)**1/2)*scipy.integrate.quad(lambda z: D*math.sin(math.acos(z/(D/2)))*((h-z)**1/2),-D/2,min(D/2,h))
+    else:
+        Q=0
+    return Q.to(u.L/u.s)
+            
 def D_Hagen(Q,hf,L,nu):
     D=((128*nu*Q*L)/(u.g_0*hf*math.pi))**(1/4)
     return D.to_base_units()
