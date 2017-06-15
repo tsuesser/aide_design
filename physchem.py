@@ -125,9 +125,15 @@ def headloss_exp_general(V,K):
     Hegen=K*V**2/(2*u.g_0)
     return Hegen.to(u.m)
 
-def headloss_gen(V,WP,L,K,nu,e):
+def headloss_gen(A,V,WP,L,K,nu,e):
      """ Returns the total head loss due to major and minor losses in the general case. This equation applies to both laminar and turbulent flows"""
-     Hlgen=h
+     Hlgen=headloss_exp_general(V,K) + headloss_fric_general(A,WP,V,L,nu,e)
+     return Hlgen.to(u.m)
+ 
+def headloss_manifold(Q,D,L,K,nu,e,n):
+    """Returns the total head loss through the manifold"""
+    hlmani=headloss(Q,D,L,nu,e,K)*(1/3+1/(2*n)+1/(6*n)**2)
+    return hlmani.to(u.m)
     
 def D_Hagen(Q,hf,L,nu):
     D=((128*nu*Q*L)/(u.g_0*hf*math.pi))**(1/4)
