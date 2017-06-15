@@ -11,8 +11,8 @@ from units import unit_registry as u
 #A few equations for useful geometry
 # Is there a geometry package that we should be using?
 
-def area_circle(D_Circle:'Diameter of Circle'):
-    return math.pi/4*D_Circle**2
+def area_circle(diam_Circle):
+    return math.pi/4*diam_Circle**2
 
 def diam_circle(A_Circle):
     return (4*A_Circle/math.pi)**(1/2)
@@ -132,8 +132,16 @@ def headloss_gen(A,V,WP,L,K,nu,e):
  
 def headloss_manifold(Q,D,L,K,nu,e,n):
     """Returns the total head loss through the manifold"""
-    hlmani=headloss(Q,D,L,nu,e,K)*(1/3+1/(2*n)+1/(6*n)**2)
+    hlmani=headloss(Q,D,L,nu,e,K)*(1/3+1/(2*n)+1/((6*n)**2))
     return hlmani.to(u.m)
+
+def flow_orifice(D,h,ratio_VC_orifice):
+    """Returns the flow rate of orifice"""
+    if h>0*u.cm:
+        Q=ratio_VC_orifice*area_circle(D)*(2*u.g_0*h)**1/2
+    else:
+         Q=0
+    return Q.to(u.L/u.s)     
     
 def D_Hagen(Q,hf,L,nu):
     D=((128*nu*Q*L)/(u.g_0*hf*math.pi))**(1/4)
@@ -145,7 +153,7 @@ def D_Hagen(Q,hf,L,nu):
 # This equation ONLY applies to turbulent flow.
 # Pint has trouble adding two numbers that are raised to the 25th power. 
 # The following code strips the units before adding the two terms and then reattaches the units.
-def D_Swamee(Q,hf,L,nu,e):
+def D_Swamee(Q,hf,L,nu,e):d
     a=((e**1.25)*((L*(Q**2))/(u.g_0*hf))**4.75).to_base_units().magnitude
     b=(nu*(Q**9.4)*(L/(u.g_0*hf))**5.2).to_base_units().magnitude
     D=(0.66*(a+b)**0.04)*u.m
