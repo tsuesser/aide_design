@@ -721,17 +721,19 @@ DIAM_SED_MANIFOLD_PORT = (1.25 * u.inch).to(u.m).magnitude
 # Given in meters.
 HEADLOSS_SED_TO_FILTER_PIPE_MAX = 0.1
 
-if EN_DOUBLE_TRAIN == 1:
-    K_SED_EXIT = 1
-else:
-    K_SED_EXIT = 0
-
-
-# Given in meters.
-if EN_DOUBLE_TRAIN == 1: 
-   HEIGTH_EXIT_FREE = 0.05
-else:
-   HEIGTH_EXIT_FREE = 0
+#==============================================================================
+# if EN_DOUBLE_TRAIN == 1:
+#     K_SED_EXIT = 1
+# else:
+#     K_SED_EXIT = 0
+# 
+# 
+# # Given in meters.
+# if EN_DOUBLE_TRAIN == 1: 
+#    HEIGHT_EXIT_FREE = 0.05
+# else:
+#    HEIGHT_EXIT_FREE = 0
+#==============================================================================
 
 ##added 12/5/16 by mrf222 ensures weir does not overtop backwards if 
 # filter weir is too high.
