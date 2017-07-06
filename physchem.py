@@ -308,7 +308,7 @@ def flow_orifice(Diam, Height, RatioVCOrifice):
                 * np.sqrt(2 * gravity.magnitude * Height[i]))
          else:
              FlowRate.append(0)
-    return FlowRate
+    return np.array(FlowRate)
 
 
 @u.wraps(u.m**3/u.s, [u.m, u.m, None], False)
@@ -318,14 +318,13 @@ def flow_orifice_vert(Diam, Height, RatioVCOrifice):
     FlowRate = []
     for i in range(len(Height)):
         if Height[i] > -Diam / 2:
-           scipy.integrate.quad(lambda z: (Diam 
-           * np.sin(np.acos(z/(Diam/2)))* np.sqrt(Height[i] - z)
+           flow_vert = scipy.integrate.quad(lambda z: (Diam 
+           * np.sin(np.arccos(z/(Diam/2)))* np.sqrt(Height[i] - z)
            ), -Diam/2,min(Diam/2,Height[i]))
-           FlowRateNew = FlowRate[0]
-           return FlowRate.append(RatioVCOrifice * np.sqrt(2 * gravity.magnitude) * FlowRateNew * 1000)
+           FlowRate.append(RatioVCOrifice * np.sqrt(2 * gravity.magnitude) *flow_vert[0])
         else:
            FlowRate.append(0)
-    return FlowRate
+    return np.array(FlowRate)
 
 
 @u.wraps(u.m, [u.m, None, u.m**3/u.s], False)
