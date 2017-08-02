@@ -264,22 +264,29 @@ def headloss_exp(FlowRate, Diam, KMinor):
 def headloss(FlowRate, Diam, Length, Nu, PipeRough, KMinor):
     """Return the total head loss from major and minor losses in a pipe.
     
-    This equation applies to both laminar and turbulent flows.
+    This equation applies to bh laminar and turbulent flows.
     """
     #Inputs do not need to be checked here because they are checked by
     #functions this function calls
-
-    size = np.array(FlowRate).size
-
+    para = [FlowRate, Diam, Length, Nu, PipeRough, KMinor]
+    for i in range(6):
+        if isinstance(para[i],list):
+            index = i
+            para[i] = np.array(para[i])
+    size = len(para[index])
     hl = []
-
     for i in range(size): 
-      headloss = (headloss_fric(FlowRate[i], Diam, Length, Nu, PipeRough).magnitude 
-          + headloss_exp(FlowRate[i], Diam, KMinor).magnitude)
-      hl.append(headloss)
+        temp = [0,0,0,0,0,0]
+        for j in range(6):
+            temp[j]=para[j]
+            if j==index:
+                temp[index]=para[index][i]
+    
+        headloss = ((headloss_fric(temp[0], temp[1], temp[2], temp[3], temp[4]).magnitude)
+        + (headloss_exp(temp[0], temp[1], temp[5]).magnitude))
+        hl.append(headloss)
       
-    if size == 1:
-      return hl[0]  
+
     return hl
 
 
