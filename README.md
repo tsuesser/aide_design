@@ -1,4 +1,4 @@
-# aide_design
+``# aide_design
 Contains all design files for the AguaClara Infrastructure Design Engine (AIDE). This package can take user-defined parameters specified in the design() function and generate a class of the particular unit process designed with all relevant dimensions determined. The resulting unit process class is easily serializable as a JSON. 
 
 ## Installing with pip
@@ -20,3 +20,6 @@ When the master branch updates with some new Pull Requests, there are several st
 3. Make sure your new package works:
     * Update your package through pip and ensure the version number has changed: `$pip install aide_design --upgrade` and `$pip list` 
     * If the version number now matches, you've successfully upgraded the pip package. 
+    
+## General development advice
+Please refer to the [Numpy package](https://github.com/numpy/numpy) on GitHub for good coding practices.  
