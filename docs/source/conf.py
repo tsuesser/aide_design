@@ -32,8 +32,7 @@ sys.path.insert(0, os.path.abspath('../../aide_design'))
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = ['sphinx.ext.autodoc', 'sphinx.ext.imgmath', 'sphinx.ext.napoleon',
-              'sphinx.ext.intersphinx', 'sphinx.ext.coverage',
-              'sphinx.ext.doctest', 'sphinx.ext.autosummary',
+              'sphinx.ext.intersphinx', 'sphinx.ext.coverage', 'sphinx.ext.autosummary',
               'sphinx.ext.graphviz']
 
 # Add any paths that contain templates here, relative to this directory.
@@ -46,7 +45,7 @@ templates_path = ['_templates']
 source_suffix = '.rst'
 
 # The master toctree document.
-master_doc = 'index'
+master_doc = 'aide_design'
 
 # General information about the project.
 project = 'aide_design'
@@ -176,14 +175,3 @@ texinfo_documents = [
 
 # Example configuration for intersphinx: refer to the Python standard library.
 intersphinx_mapping = {'https://docs.python.org/': None}
-
-# Mocking c libraries:
-from unittest.mock import MagicMock
-
-class Mock(MagicMock):
-    @classmethod
-    def __getattr__(cls, name):
-            return MagicMock()
-
-MOCK_MODULES = ['pygtk', 'gtk', 'gobject', 'argparse', 'numpy', 'pandas', '_tkinter']
-sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)

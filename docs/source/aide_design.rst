@@ -4,22 +4,6 @@ aide\_design package
 Submodules
 ----------
 
-aide\_design\.cdc\_functions module
------------------------------------
-
-.. automodule:: aide_design.cdc_functions
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-aide\_design\.example module
-----------------------------
-
-.. automodule:: aide_design.example
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 aide\_design\.expert\_inputs module
 -----------------------------------
 

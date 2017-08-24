@@ -146,27 +146,27 @@ def _length_cdc_tube_array(FlowPlant, ConcDoseMax, ConcStock,
     return _len_tube(Flow, DiamTubeAvail, HeadlossCDC, Nu, MinorLossCDCTube).magnitude
     
 
-# Find the index of that tube
-@u.wraps(None, [u.m**3/u.s, u.kg/u.m**3, u.kg/u.m**3, u.m, u.m, u.m, None, None], False)
-def i_cdc(FlowPlant, ConcDoseMax, ConcStock, 
-          DiamTubeAvail, HeadlossCDC, LenCDCTubeMax, 
-          ENCoag, MinorLossCDCTube):
-    
-    tube_array = _length_cdc_tube_array(FlowPlant, ConcDoseMax, ConcStock, 
-                                        DiamTubeAvail, HeadlossCDC, ENCoag, 
-                                        MinorLossCDCTube) 
-    
-    print(tube_array[0].magnitude)
-    print(LenCDCTubeMax)
-    
-    if tube_array[0].magnitude < float(LenCDCTubeMax):
-        y = ut.floor_nearest(LenCDCTubeMax,tube_array)
-        x = (tube_array.index(y)).magnitude
-    
-    else:
-        x = 0
-    
-    return x
+# # Find the index of that tube
+# @u.wraps(None, [u.m**3/u.s, u.kg/u.m**3, u.kg/u.m**3, u.m, u.m, u.m, None, None], False)
+# def i_cdc(FlowPlant, ConcDoseMax, ConcStock,
+#           DiamTubeAvail, HeadlossCDC, LenCDCTubeMax,
+#           ENCoag, MinorLossCDCTube):
+#
+#     tube_array = _length_cdc_tube_array(FlowPlant, ConcDoseMax, ConcStock,
+#                                         DiamTubeAvail, HeadlossCDC, ENCoag,
+#                                         MinorLossCDCTube)
+#
+#     print(tube_array[0].magnitude)
+#     print(LenCDCTubeMax)
+#
+#     if tube_array[0].magnitude < float(LenCDCTubeMax):
+#         y = ut.floor_nearest(LenCDCTubeMax,tube_array)
+#         x = (tube_array.index(y)).magnitude
+#
+#     else:
+#         x = 0
+#
+#     return x
 
 
 
@@ -175,49 +175,49 @@ def i_cdc(FlowPlant, ConcDoseMax, ConcStock,
 #==============================================================================
 #The length of tubing may be longer than the max specified if the stock concentration is too
 # high to give a viable solution with the specified length of tubing.
-@u.wraps(u.m, [u.m**3/u.s, u.kg/u.m**3, u.kg/u.m**3, u.m, u.m, u.m, None, None], False)
-def len_cdc_tube(FlowPlant, ConcDoseMax, ConcStock, 
-                 DiamTubeAvail, HeadlossCDC, LenCDCTubeMax, 
-                 ENCoag, MinorLossCDCTube):
-   
-    index = i_cdc(FlowPlant, ConcDoseMax, ConcStock, 
-                DiamTubeAvail, HeadlossCDC, LenCDCTubeMax, 
-                ENCoag, MinorLossCDCTube)
-    
-    len_cdc_tube = (_length_cdc_tube_array(FlowPlant, ConcDoseMax, ConcStock, 
-                                        DiamTubeAvail, HeadlossCDC, ENCoag, 
-                                        MinorLossCDCTube))[index].magnitude
-   
-    return len_cdc_tube
+# @u.wraps(u.m, [u.m**3/u.s, u.kg/u.m**3, u.kg/u.m**3, u.m, u.m, u.m, None, None], False)
+# def len_cdc_tube(FlowPlant, ConcDoseMax, ConcStock,
+#                  DiamTubeAvail, HeadlossCDC, LenCDCTubeMax,
+#                  ENCoag, MinorLossCDCTube):
+#
+#     index = i_cdc(FlowPlant, ConcDoseMax, ConcStock,
+#                 DiamTubeAvail, HeadlossCDC, LenCDCTubeMax,
+#                 ENCoag, MinorLossCDCTube)
+#
+#     len_cdc_tube = (_length_cdc_tube_array(FlowPlant, ConcDoseMax, ConcStock,
+#                                         DiamTubeAvail, HeadlossCDC, ENCoag,
+#                                         MinorLossCDCTube))[index].magnitude
+#
+#     return len_cdc_tube
 
 
-@u.wraps(u.m, [u.m**3/u.s, u.kg/u.m**3, u.kg/u.m**3, u.m, u.m, u.m, None, None], False)
-def diam_cdc_tube(FlowPlant, ConcDoseMax, ConcStock, 
-                  DiamTubeAvail, HeadlossCDC, LenCDCTubeMax, 
-                  ENCoag, MinorLossCDCTube):
-     
-    index = i_cdc(FlowPlant, ConcDoseMax, ConcStock, 
-                   DiamTubeAvail, HeadlossCDC, LenCDCTubeMax, 
-                   ENCoag, MinorLossCDCTube)
-    
-    diam_cdc_tube = DiamTubeAvail[index]
-     
-    return diam_cdc_tube
+# @u.wraps(u.m, [u.m**3/u.s, u.kg/u.m**3, u.kg/u.m**3, u.m, u.m, u.m, None, None], False)
+# def diam_cdc_tube(FlowPlant, ConcDoseMax, ConcStock,
+#                   DiamTubeAvail, HeadlossCDC, LenCDCTubeMax,
+#                   ENCoag, MinorLossCDCTube):
+#
+#     index = i_cdc(FlowPlant, ConcDoseMax, ConcStock,
+#                    DiamTubeAvail, HeadlossCDC, LenCDCTubeMax,
+#                    ENCoag, MinorLossCDCTube)
+#
+#     diam_cdc_tube = DiamTubeAvail[index]
+#
+#     return diam_cdc_tube
  
 
-@u.wraps(None, [u.m**3/u.s, u.kg/u.m**3, u.kg/u.m**3, u.m, u.m, u.m, None, None], False)    
-def n_cdc_tube(FlowPlant, ConcDoseMax, ConcStock, 
-          DiamTubeAvail, HeadlossCDC, LenCDCTubeMax, 
-          ENCoag, MinorLossCDCTube):
-    
-    index = i_cdc(FlowPlant, ConcDoseMax, ConcStock, 
-                  DiamTubeAvail, HeadlossCDC, LenCDCTubeMax, 
-                  ENCoag, MinorLossCDCTube)
-    
-    n_cdc_tube = _n_tube_array(FlowPlant, ConcDoseMax, ConcStock, 
-                  DiamTubeAvail, HeadlossCDC)[index]
-    
-    return n_cdc_tube
+# @u.wraps(None, [u.m**3/u.s, u.kg/u.m**3, u.kg/u.m**3, u.m, u.m, u.m, None, None], False)
+# def n_cdc_tube(FlowPlant, ConcDoseMax, ConcStock,
+#           DiamTubeAvail, HeadlossCDC, LenCDCTubeMax,
+#           ENCoag, MinorLossCDCTube):
+#
+#     index = i_cdc(FlowPlant, ConcDoseMax, ConcStock,
+#                   DiamTubeAvail, HeadlossCDC, LenCDCTubeMax,
+#                   ENCoag, MinorLossCDCTube)
+#
+#     n_cdc_tube = _n_tube_array(FlowPlant, ConcDoseMax, ConcStock,
+#                   DiamTubeAvail, HeadlossCDC)[index]
+#
+#     return n_cdc_tube
 
 
 
