@@ -34,7 +34,7 @@ sys.path.insert(0, os.path.abspath('../../aide_design'))
 extensions = ['sphinx.ext.autodoc', 'sphinx.ext.imgmath', 'sphinx.ext.napoleon',
               'sphinx.ext.intersphinx', 'sphinx.ext.coverage',
               'sphinx.ext.doctest', 'sphinx.ext.autosummary',
-              'sphinx.ext.graphviz',]
+              'sphinx.ext.graphviz']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
