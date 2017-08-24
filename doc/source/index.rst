@@ -10,6 +10,8 @@ Welcome to aide_design's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+    Hi there!
+
 Indices and tables
 ==================
 
