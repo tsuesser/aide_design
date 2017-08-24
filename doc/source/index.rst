@@ -10,9 +10,6 @@ Welcome to aide_design's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-.. automodule:: example
-   :members:
-
 
 Indices and tables
 ==================
