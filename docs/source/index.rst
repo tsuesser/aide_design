@@ -6,10 +6,6 @@
 Welcome to aide_design's documentation!
 =======================================
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents:
-
 
 Indices and tables
 ==================
