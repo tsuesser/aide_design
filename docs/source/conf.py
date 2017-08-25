@@ -31,9 +31,11 @@ sys.path.insert(0, os.path.abspath('../../aide_design'))
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ['sphinx.ext.autodoc', 'sphinx.ext.imgmath', 'sphinx.ext.napoleon',
-              'sphinx.ext.intersphinx', 'sphinx.ext.coverage', 'sphinx.ext.autosummary',
-              'sphinx.ext.graphviz']
+extensions = ['sphinx.ext.autodoc']
+
+# , 'sphinx.ext.imgmath', 'sphinx.ext.napoleon',
+#               'sphinx.ext.intersphinx', 'sphinx.ext.coverage', 'sphinx.ext.autosummary',
+#               'sphinx.ext.graphviz'
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
