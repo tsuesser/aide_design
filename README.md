@@ -1,4 +1,4 @@
-``# aide_design
+# aide_design
 Contains all design files for the AguaClara Infrastructure Design Engine (AIDE). This package can take user-defined parameters specified in the design() function and generate a class of the particular unit process designed with all relevant dimensions determined. The resulting unit process class is easily serializable as a JSON. 
 
 ## Installing with pip
